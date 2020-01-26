@@ -8,6 +8,7 @@
 
 import Cocoa
 import SwiftyJSON
+import Alamofire
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -25,6 +26,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let token = arcrcApiToken()
         print(host ?? "no host")
         print(token ?? "no token")
+        whoAmI();
     }
     
     func parseArcrc() -> JSON? {
@@ -50,6 +52,39 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
         return nil
+    }
+    
+    func request(method: String, parameters: Parameters? = nil, completion: @escaping (JSON) -> Void) -> Void {
+        let host = arcrcHost() ?? ""
+        let token = arcrcApiToken() ?? ""
+        
+        let _parameters: Parameters = [
+            "api.token":token
+        ].merging(parameters ?? [:]) { (_, new) in new }
+        
+        
+        AF.request("\(host)/\(method)", parameters: _parameters).validate().responseJSON { response in
+            
+            
+            switch response.result {
+            case .success(let value):
+                let json = JSON(value)
+                completion(json)
+                return
+            case .failure(let error):
+                print(error)
+                return
+            }
+        }
+    }
+    
+    func whoAmI() {
+        request(method: "user.whoami", parameters: [
+             "client": "arc",
+             "clientVersion": 1000
+        ]) { response in
+            print("Returned String Data is: \(response["result"])")
+        }
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {
