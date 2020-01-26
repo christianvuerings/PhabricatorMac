@@ -7,35 +7,77 @@
 //
 
 import Cocoa
+import SwiftyJSON
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
     let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-
-
+    let popoverView = NSPopover()
+    
+    
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         statusItem.button?.title = "⚙️"
         statusItem.button?.target = self
         statusItem.button?.action = #selector(showSettings)
+        
+        let host = arcrcHost()
+        let token = arcrcApiToken()
+        print(host ?? "no host")
+        print(token ?? "no token")
     }
+    
+    func parseArcrc() -> JSON? {
+        let fileManager = FileManager.default
+        let home = fileManager.homeDirectoryForCurrentUser
+        let arcrcURL = home.appendingPathComponent(".arcrc")
+        
+        guard let contents = fileManager.contents(atPath: arcrcURL.path) else { return nil }
+        guard let json = try? JSON(data: contents) else {return nil}
+        return json
+    }
+    
+    func arcrcHost() -> String? {
+        let host:String? = Array(parseArcrc()?["hosts"].dictionaryValue.keys ?? nil!).first
+        return host ?? nil
+    }
+    
+    func arcrcApiToken() -> String? {
+        if let hosts:[String: JSON] = parseArcrc()?["hosts"].dictionaryValue {
 
+            for item in hosts {
+                return item.1["token"].stringValue
+            }
+        }
+        return nil
+    }
+    
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
+        popoverView.close()
     }
     
     @objc func showSettings() {
         let storyboard = NSStoryboard(name: "Main", bundle: nil)
         guard let vc = storyboard.instantiateController(withIdentifier: "ViewController")
             as? ViewController else {
-            fatalError("Unable to find ViewController in the storyboard.")
+                fatalError("Unable to find ViewController in the storyboard.")
         }
         
-        let popoverView = NSPopover()
-        popoverView.contentViewController = vc
+        
         popoverView.behavior = .transient
+        popoverView.appearance = NSAppearance(named: .darkAqua)
+        popoverView.animates = false
+        popoverView.contentViewController = vc
         popoverView.show(relativeTo: statusItem.button!.bounds, of: statusItem.button!, preferredEdge: .maxY)
+        
+        NSApp.activate(ignoringOtherApps: true)
     }
-
-
+    
+    func applicationWillResignActive(_ notification: Notification) {
+        popoverView.close()
+    }
+    
+    
 }
 

@@ -688,28 +688,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DzT-Kt-SeS">
-                                <rect key="frame" x="18" y="234" width="444" height="16"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" title="Testing" id="h1C-gx-26c">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NQh-72-QIP">
+                                <rect key="frame" x="20" y="81" width="440" height="104"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="AzA-lE-ofk"/>
+                            </imageView>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c0M-dS-PgO">
+                                <rect key="frame" x="20" y="90" width="440" height="104"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSComputer" id="Hue-cy-WGO"/>
+                            </imageView>
                         </subviews>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="DzT-Kt-SeS" secondAttribute="trailing" constant="20" id="TBd-Z2-0lu"/>
-                            <constraint firstItem="DzT-Kt-SeS" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="ang-Ks-7jO"/>
-                            <constraint firstItem="DzT-Kt-SeS" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="i92-px-I7X"/>
-                        </constraints>
                     </view>
-                    <connections>
-                        <outlet property="output" destination="DzT-Kt-SeS" id="Pa8-Ii-pdi"/>
-                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="74" y="210"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="NSComputer" width="32" height="32"/>
+    </resources>
 </document>
